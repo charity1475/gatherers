@@ -4,32 +4,26 @@ import java.util.Map;
 import java.util.Objects;
 
 public class AppConfig {
-	private static final String HTTP_URL_ENV = "HTTP_REQUEST_URL";
-	private static final String REDIS_HOST_ENV = "REDIS_HOST";
-	private static final String REDIS_PORT_ENV = "REDIS_PORT";
-	private static final String REDIS_PASSWORD_ENV = "REDIS_PASSWORD";
-	private static final String REDIS_KEY = "REDIS_KEY";
-	private static final String DECODER_NAME = "AZAM TV";
 	private final String httpRequestUrl;
 	private final String redisHost;
 	private final int redisPort;
 	private final String redisPassword;
 	private final String redisKey;
 	private final String decoderName;
+	private final String country;
+	private final int pageSize;
 
 	public AppConfig() {
-		this.httpRequestUrl = Objects.requireNonNull(System.getenv(HTTP_URL_ENV),
-				HTTP_URL_ENV + " Environment variable HTTP_URL_ENV not set");
-		this.redisHost = Objects.requireNonNull(System.getenv(REDIS_HOST_ENV),
-				REDIS_HOST_ENV + " Environment variable REDIS_HOST_ENV not set");
-		this.redisKey = Objects.requireNonNull(System.getenv(REDIS_KEY),
-				REDIS_KEY + " Environment variable REDIS_KEY not set");
-		this.decoderName = Objects.requireNonNull(System.getenv(DECODER_NAME),
-				DECODER_NAME + " Environment variable DECODER_NAME not set");
-		String redisPortStr = System.getenv(REDIS_PORT_ENV);
+		this.httpRequestUrl = System.getenv("DECODER_HTTP_URL");
+		this.redisHost = System.getenv("REDIS_HOST");
+		this.redisKey = System.getenv("REDIS_KEY");
+		this.decoderName = System.getenv("DECODER_NAME");
+		String redisPortStr = System.getenv("REDIS_PORT");
 		this.redisPort = (redisPortStr != null && !redisPortStr.isEmpty())
 				? Integer.parseInt(redisPortStr) : 6379;
-		this.redisPassword = System.getenv(REDIS_PASSWORD_ENV);
+		this.redisPassword = System.getenv("REDIS_PASSWORD");
+		this.country = System.getenv("COUNTRY");
+		this.pageSize = Integer.parseInt(System.getenv("PAGE_SIZE"));
 	}
 
 	public String getHttpRequestUrl() {
@@ -45,20 +39,27 @@ public class AppConfig {
 		return redisPassword;
 	}
 	public String getRedisKey() {
-		return redisKey;
+		return String.format("%s:%s", redisKey, country);
 	}
 	public String getDecoderName() {
 		return decoderName;
+	}
+	public String getCountry() {
+		return country;
+	}
+	public int getPageSize() {
+		return pageSize;
 	}
 
 	@Override
 	public String toString() {
 		Map<String, String> config = Map.of(
-				HTTP_URL_ENV, httpRequestUrl,
-				REDIS_HOST_ENV, redisHost,
-				REDIS_PORT_ENV, String.valueOf(redisPort),
-				REDIS_PASSWORD_ENV, redisPassword
+				"decoderUrl", httpRequestUrl,
+				"redisHost", redisHost,
+				"redisPort", String.valueOf(redisPort),
+				"decoderName", redisPassword,
+				"country", country
 		);
-		return String.format("AppConfig { %s }", config);
+		return String.format("AppConfig: ", config);
 	}
 }

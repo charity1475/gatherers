@@ -5,17 +5,34 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+
+import org.json.JSONObject;
+import org.mjumbe.config.AppConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DataFetcher {
 	public static final Logger LOGGER = LoggerFactory.getLogger(DataFetcher.class);
 
-	public String fetchData(String url) {
-		LOGGER.info("Fetching data from URL: {}", url);
+	public String fetchData(AppConfig config) {
+		LOGGER.info("Fetching data from URL: {}", config.getHttpRequestUrl());
+		String date = java.time.LocalDate.now().toString();
+		LOGGER.info("Today's date: {}", date);
 		try (HttpClient client = HttpClient.newHttpClient()) {
-			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url))
-					.GET().build();
+			JSONObject requestBody = new JSONObject();
+			requestBody.put("date", date);
+			requestBody.put("category", "All");
+			requestBody.put("country", config.getCountry());
+			requestBody.put("page_no", 1);
+			requestBody.put("page_size", config.getPageSize());
+
+			HttpRequest request = HttpRequest.newBuilder()
+					.uri(URI.create(config.getHttpRequestUrl()))
+					.header("Content-Type", "application/json")
+					.POST(HttpRequest.BodyPublishers.ofString(requestBody.toString(), StandardCharsets.UTF_8))
+					.build();
+
 			try {
 				HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 				if (response.statusCode() != 200) {
