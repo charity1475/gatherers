@@ -2,7 +2,6 @@ package org.mjumbe.transformers;
 
 import org.json.JSONObject;
 import org.json.XML;
-import org.mjumbe.redis.DataCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +18,6 @@ public class Transformer {
 	/**
 	 * @param jsonInput JSON string to be transformed
 	 * @return XML string
-	 *
 	 */
 	public String transformJsonToXml(String jsonInput) {
 		JSONObject jsonObject = new JSONObject(jsonInput);
@@ -29,7 +27,6 @@ public class Transformer {
 	/**
 	 * @param xmlInput XML string to be transformed
 	 * @return JSON string
-	 *
 	 */
 	public String transformXmlToJson(String xmlInput) {
 		JSONObject jsonObject = XML.toJSONObject(xmlInput);
@@ -39,7 +36,6 @@ public class Transformer {
 	/**
 	 * @param data JSON string to be transformed
 	 * @return JSON string
-	 *
 	 */
 	public String parseData(String data) {
 		logger.info("Starting data transformation...");
