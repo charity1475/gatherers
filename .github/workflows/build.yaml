@@ -1,0 +1,53 @@
+name: Build and Release JAR
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up JDK 21
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      # Cache Maven dependencies
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Build the project
+      - name: Build with Maven
+        run: mvn clean package
+
+      # Create the target directory for the JAR
+      - name: Create artifacts directory
+        run: mkdir -p out/artifacts/gatherers_jar
+
+      # Move the JAR file to the specified path
+      - name: Move JAR to artifacts directory
+        run: mv target/*.jar out/artifacts/gatherers_jar/gatherers.jar
+
+      # Upload the JAR file as an artifact
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: gatherers-jar
+          path: out/artifacts/gatherers_jar/gatherers.jar
