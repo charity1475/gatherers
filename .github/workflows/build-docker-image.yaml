@@ -1,0 +1,50 @@
+name: Build Docker Image
+
+on:
+  workflow_run:
+    workflows: ["Build and Release JAR"]
+    types: [completed]
+
+jobs:
+  download-jar:
+    runs-on: ubuntu-latest
+    outputs:
+      artifact-path: ${{ steps.download.outputs.download-path }}
+    steps:
+      - name: Download JAR Artifact
+        id: download
+        uses: actions/download-artifact@v4
+        with:
+          name: gatherers.jar
+
+  build-docker:
+    needs: download-jar
+    runs-on: ubuntu-latest
+    if: ${{ needs.download-jar.result == 'success' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        id: docker_build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64
+          build-args: JAR_FILE=${{ needs.download-jar.outputs.artifact-path }}/gatherers.jar
+          tags: charity1475/azam-tv-gatherer:${{ github.sha }}
+          push: true
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}

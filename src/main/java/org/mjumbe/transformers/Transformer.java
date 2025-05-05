@@ -2,12 +2,10 @@ package org.mjumbe.transformers;
 
 import org.json.JSONObject;
 import org.json.XML;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
 
 public class Transformer {
-	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	public void transform() {
 		StreamSource streamSource = new StreamSource(new File("src/main/resources/transformer.xsl"));
 	}
