@@ -16,7 +16,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ${{ github.workspace }}/build/artifacts
-          name: Package
+#          name: Package
           run-id: upload-artifact
       - name: Display structure of downloaded files
         run: echo "------------- ";ls -R ${{ github.workspace }}/build/artifacts;echo "-------------";
