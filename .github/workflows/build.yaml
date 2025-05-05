@@ -45,8 +45,6 @@ jobs:
       - name: Move JAR to artifacts directory
         run: mv target/*.jar out/artifacts/gatherers_jar/gatherers.jar
 
-      - name: Upload jar
-        run: cp target/*.jar out/artifacts/gatherers_jar
       - uses: actions/upload-artifact@v4
         with:
           name: Package
