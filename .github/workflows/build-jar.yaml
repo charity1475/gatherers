@@ -41,13 +41,15 @@ jobs:
 
       # Create the target directory for the JAR
       - name: Create artifacts directory
-        run: mkdir -p out/artifacts/gatherers_jar
+        run: mkdir -p ${{ github.workspace }}/build/artifacts
 
       # Move the JAR file to the specified path
       - name: Move JAR to artifacts directory
-        run: mv target/*.jar out/artifacts/gatherers_jar/gatherers.jar
+        run: mv target/*.jar ${{ github.workspace }}/build/artifacts/app.jar
 
       - uses: actions/upload-artifact@v4
+        id: upload-artifact
         with:
           name: Package
-          path: out/artifacts/gatherers_jar/gatherers.jar
+          path: ${{ github.workspace }}/build/artifacts/app.jar
+          overwrite: true
