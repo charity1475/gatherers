@@ -15,7 +15,7 @@ jobs:
         id: download
         uses: actions/download-artifact@v4
         with:
-          name: gatherers.jar
+          name: Package
 
   build-docker:
     needs: download-jar
