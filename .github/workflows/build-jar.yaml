@@ -39,15 +39,18 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
+      - name: Create artifacts directory
+        run: mkdir -p artifacts
+
       # Move the JAR file to the specified path
       - name: Move JAR to artifacts directory
-        run: mv target/*.jar ${{ github.workspace }}/app.jar
+        run: mv target/*.jar artifacts/app.jar
 
       - uses: actions/upload-artifact@v4
         id: upload-artifact
         with:
           name: Package
-          path: artifacts/
+          path: artifacts/app.jar
           overwrite: true
 
       - name: Show Upload Directory
