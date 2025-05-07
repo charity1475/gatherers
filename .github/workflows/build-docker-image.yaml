@@ -12,19 +12,27 @@ jobs:
     outputs:
       artifact-path: ${{ steps.download.outputs.download-path }}
     steps:
-      - name: Show Download Directory Before
-        run: ls -R ${{ github.workspace }}
-
-      - name: Download JAR Artifact
-        id: download
+      - name: Download JAR file
+        id: download-jar
         uses: actions/download-artifact@v4
         with:
+          name: jar
           github-token: ${{ github.token }}
           repository: '${{ github.repository }}'
           merge-multiple: 'true'
           run-id: 14884840993
 
-      - name: Show Download Directory After
+      - name: Download Dockerfile
+        id: download-docker
+        uses: actions/download-artifact@v4
+        with:
+          name: Dockerfile
+          github-token: ${{ github.token }}
+          repository: '${{ github.repository }}'
+          merge-multiple: 'true'
+          run-id: 14884840993
+
+      - name: Show files Downloaded
         run: ls -R
 
       - name: Set up Docker Buildx

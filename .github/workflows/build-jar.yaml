@@ -48,7 +48,7 @@ jobs:
         run: mv target/*.jar artifacts/app.jar
 
       - uses: actions/upload-artifact@v4
-        id: upload-artifact
+        id: upload-jar-artifact
         with:
           name: jar
           path: artifacts/app.jar
