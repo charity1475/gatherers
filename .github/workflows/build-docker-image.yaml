@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  download-jar:
+  docker-build:
     runs-on: ubuntu-latest
     outputs:
       artifact-path: ${{ steps.download.outputs.download-path }}
