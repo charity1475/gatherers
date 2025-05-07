@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: azam-tv-gatherer-job
+  namespace: mjumbe
+spec:
+  schedule: "0 0 * * *"
+  timeZone: "Africa/Nairobi"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: azam-tv-gatherer
+              image: docker.io/charity1475/azam-tv-gatherer:latest
+              imagePullPolicy: Always
+              env:
+                - name: DECODER_HTTP_URL
+                  value: "https://web1.azamtvltd.co.tz/api/method/azam_tv.azam_tv.api.get_show_by_date_and_country"
+                - name: COUNTRY
+                  value: "TANZANIA"
+                - name: PAGE_SIZE
+                  value: "5000"
+                - name: REDIS_HOST
+                  value: "redis-service"
+                - name: REDIS_KEY
+                  value: "AZAM_TV"
+                - name: DECODER_NAME
+                  value: "AZAM TV"
+                - name: REDIS_PORT
+                  value: "6379"
+                - name: REDIS_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: redis-secret
+                      key: redis-password
+          restartPolicy: OnFailure
+      backoffLimit: 3
