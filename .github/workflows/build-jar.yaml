@@ -47,15 +47,20 @@ jobs:
       - name: Move JAR to artifacts directory
         run: mv target/*.jar artifacts/app.jar
 
-      # Copy Dockerfile to package
-      - name: Move JAR to artifacts directory
-        run: cp Dockerfile artifacts/Dockerfile
-
       - uses: actions/upload-artifact@v4
         id: upload-artifact
         with:
-          name: Package
-          path: artifacts/*
+          name: jar
+          path: artifacts/app.jar
+          overwrite: 'true'
+
+      - uses: actions/upload-artifact@v4
+        id: upload-docker-artifact
+        with:
+          name: Dockerfile
+          path: Dockerfile
+          overwrite: 'true'
+
 
       - name: Show Upload Directory
         run: ls -R ${{ github.workspace }}
