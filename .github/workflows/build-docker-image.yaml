@@ -20,13 +20,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: Package
+          pattern: artifacts/*
           github-token: ${{ github.token }}
           repository: '${{ github.repository }}'
-          path: artifacts
+          merge-multiple: 'true'
           run-id: 14884840993
 
       - name: Show Download Directory After
-        run: ls -R artifacts
+        run: ls -R
 
       - name: Set up Docker Buildx
         id: buildx
@@ -43,7 +44,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: artifacts/Dockerfile
+          file: Dockerfile
           platforms: linux/amd64,linux/arm64
           tags: charity1475/azam-tv-gatherer:${{ github.sha }}
           push: true
