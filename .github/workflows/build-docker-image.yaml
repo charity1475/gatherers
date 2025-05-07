@@ -4,6 +4,7 @@ on:
   workflow_run:
     workflows: ["Build and Release JAR"]
     types: [completed]
+  workflow_dispatch:
 
 jobs:
   download-jar:
@@ -18,12 +19,12 @@ jobs:
         id: download
         uses: actions/download-artifact@v4
         with:
-          path: ${{ github.workspace }}
           name: Package
-          run-id: upload-artifact
+          path: artifacts
+          run-id: 14883836927
 
       - name: Show Download Directory After
-        run: ls -R ${{ github.workspace }}
+        run: ls -R artifacts
 
   build-docker:
     needs: download-jar

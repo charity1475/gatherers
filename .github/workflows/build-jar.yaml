@@ -47,7 +47,7 @@ jobs:
         id: upload-artifact
         with:
           name: Package
-          path: ${{ github.workspace }}/app.jar
+          path: artifacts/
           overwrite: true
 
       - name: Show Upload Directory

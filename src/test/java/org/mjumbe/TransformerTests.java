@@ -20,6 +20,7 @@ public class TransformerTests {
 		String input = dataFetcher.fetchData(config);
 		JSONTransformer transformer = new JSONTransformer();
 		String result = transformer.parseData(input);
+
 		logger.info("Transformed Output: {}", result);
 		assertTrue(result != null);
 	}
