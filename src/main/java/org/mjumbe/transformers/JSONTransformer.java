@@ -41,6 +41,7 @@ public class JSONTransformer {
 			logger.error("No programs found in the response.");
 			throw new RuntimeException("No programs found in the response.");
 		}
+		logger.info("Data transformation completed successfully ...");
 		return programs.toString(4);
 	}
 
@@ -56,7 +57,6 @@ public class JSONTransformer {
 	public String parseData(String data) {
 		logger.info("Starting data transformation...");
 		try {
-			logger.info("Ending JSON Transformation ...");
 			return transform(data);
 		} catch (Exception e) {
 			logger.error("An unexpected error occurred during transformation: {}", e.getMessage());
