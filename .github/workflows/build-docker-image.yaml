@@ -11,15 +11,19 @@ jobs:
     outputs:
       artifact-path: ${{ steps.download.outputs.download-path }}
     steps:
+      - name: Show Download Directory Before
+        run: ls -R ${{ github.workspace }}
+
       - name: Download JAR Artifact
         id: download
         uses: actions/download-artifact@v4
         with:
-          path: ${{ github.workspace }}/build/artifacts
-#          name: Package
+          path: ${{ github.workspace }}
+          name: Package
           run-id: upload-artifact
-      - name: Display structure of downloaded files
-        run: echo "------------- ";ls -R ${{ github.workspace }}/build/artifacts;echo "-------------";
+
+      - name: Show Download Directory After
+        run: ls -R ${{ github.workspace }}
 
   build-docker:
     needs: download-jar
@@ -38,9 +42,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Display structure of downloaded folders
-        run: echo "------------- ";ls -R ${{ needs.download-jar.outputs.artifact-path }};ls -R ${{ github.workspace }}/build/artifacts;echo "-------------";
 
       - name: Build and Push Docker Image
         id: docker_build
