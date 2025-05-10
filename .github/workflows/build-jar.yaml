@@ -60,7 +60,3 @@ jobs:
           name: Dockerfile
           path: Dockerfile
           overwrite: 'true'
-
-
-      - name: Show Upload Directory
-        run: ls -R ${{ github.workspace }}

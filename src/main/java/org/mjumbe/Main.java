@@ -6,6 +6,7 @@ import org.mjumbe.redis.DataCache;
 import org.mjumbe.transformers.JSONTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.time.LocalDateTime;
 
 public class Main {
 	private static final Logger logger = LoggerFactory.getLogger(Main.class);
@@ -28,7 +29,7 @@ public class Main {
 			logger.error("An error occurred during the scheduled job execution: {}", e.getMessage());
 			System.exit(1);
 		}
-		logger.info("Decoder scrape job completed successfully at {} ...", java.time.LocalDateTime.now());
+		logger.info("Decoder scrape job completed successfully at {} ...", LocalDateTime.now());
 	}
 
 }

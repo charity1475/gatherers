@@ -52,7 +52,7 @@ jobs:
           context: .
           file: Dockerfile
           platforms: linux/amd64,linux/arm64
-          tags: charity1475/azam-tv-gatherer:${{ github.sha }}
+          tags: charity1475/azam-tv-gatherer:latest
           push: true
 
       - name: Image digest
